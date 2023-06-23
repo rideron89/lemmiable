@@ -18,7 +18,7 @@ import routerBindings, {
   NavigateToResource,
   UnsavedChangesNotifier,
 } from "@refinedev/react-router-v6";
-import { dataProvider, liveProvider } from "@refinedev/supabase";
+// import { dataProvider, liveProvider } from "@refinedev/supabase";
 import { useTranslation } from "react-i18next";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import authProvider from "./authProvider";
@@ -37,7 +37,12 @@ import {
   CategoryList,
   CategoryShow,
 } from "./pages/categories";
-import { supabaseClient } from "./utility";
+import { dataProvider } from "./rest-data-provider";
+// import { supabaseClient } from "./utility";
+
+function getApiUrl(): string {
+  return "http://localhost:8888/.netlify/functions"
+}
 
 function App() {
   const { t, i18n } = useTranslation();
@@ -57,8 +62,9 @@ function App() {
           <GlobalStyles styles={{ html: { WebkitFontSmoothing: "auto" } }} />
           <RefineSnackbarProvider>
             <Refine
-              dataProvider={dataProvider(supabaseClient)}
-              liveProvider={liveProvider(supabaseClient)}
+              dataProvider={dataProvider(getApiUrl())}
+              // dataProvider={dataProvider(supabaseClient)}
+              // liveProvider={liveProvider(supabaseClient)}
               authProvider={authProvider}
               routerProvider={routerBindings}
               notificationProvider={notificationProvider}
