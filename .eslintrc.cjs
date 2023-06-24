@@ -12,7 +12,11 @@ module.exports = {
   plugins: ["react-refresh"],
   rules: {
     "indent": ["warn", 2],
+    "react-hooks/exhaustive-deps": ["warn", {
+      "additionalHooks": "useDebouncedEffect"
+    }],
     "react-refresh/only-export-components": "warn",
+
     "quotes": ["warn", "double"],
   },
 };

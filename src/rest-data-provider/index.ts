@@ -15,7 +15,7 @@ export const dataProvider = (
   "createMany" | "updateMany" | "deleteMany"
 > => ({
   getList: async ({ resource, pagination, filters, sorters, meta }) => {
-    const url = `${apiUrl}/${resource}_list`;
+    const url = `${apiUrl}/${resource}_search`;
 
     const { current = 1, pageSize = 10, mode = "server" } = pagination ?? {};
 
@@ -28,12 +28,13 @@ export const dataProvider = (
       hostname: string;
       limit?: number;
       page?: number;
+      query?: string;
 
       _start?: number;
       _end?: number;
       sort?: string;
       _order?: string;
-    } = { hostname };
+    } = { hostname, query: meta?.query };
 
     if (mode === "server") {
       query.limit = pageSize;

@@ -1,16 +1,17 @@
 export interface LemmyCommunityInfo {
-  id: number
-  name: string
-  title: string
-  removed: boolean
-  published: string
-  deleted: boolean
-  nsfw: boolean
   actor_id: string
-  local: boolean
+  deleted: boolean
+  description: string
   hidden: boolean
-  posting_restricted_to_mods: boolean
+  id: number
   instance_id: number
+  local: boolean
+  name: string
+  nsfw: boolean
+  posting_restricted_to_mods: boolean
+  published: string
+  removed: boolean
+  title: string
 }
 
 export type LemmyCommunitySubscriptionStatus = "NotSubscribed" | "Subscribed"
