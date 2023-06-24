@@ -18,29 +18,17 @@ import routerBindings, {
   NavigateToResource,
   UnsavedChangesNotifier,
 } from "@refinedev/react-router-v6";
-// import { dataProvider, liveProvider } from "@refinedev/supabase";
+import { liveProvider, dataProvider as supabaseDataProvider } from "@refinedev/supabase";
 import { useTranslation } from "react-i18next";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import authProvider from "./authProvider";
 import { AppIcon } from "./components/app-icon";
 import { Header } from "./components/header";
 import { ColorModeContextProvider } from "./contexts/color-mode";
-import {
-  BlogPostCreate,
-  BlogPostEdit,
-  BlogPostList,
-  BlogPostShow,
-} from "./pages/blog-posts";
-import {
-  CategoryCreate,
-  CategoryEdit,
-  CategoryList,
-  CategoryShow,
-} from "./pages/categories";
 import { CommunityList } from "./pages/communities/list";
 import { PostList } from "./pages/posts/list";
-import { dataProvider } from "./rest-data-provider";
-// import { supabaseClient } from "./utility";
+import { dataProvider as restDataProvider } from "./rest-data-provider";
+import { supabaseClient } from "./utility";
 
 function getApiUrl(): string {
   return "http://localhost:8888/.netlify/functions"
@@ -64,9 +52,11 @@ function App() {
           <GlobalStyles styles={{ html: { WebkitFontSmoothing: "auto" } }} />
           <RefineSnackbarProvider>
             <Refine
-              dataProvider={dataProvider(getApiUrl(), "https://voyager.lemmy.ml")}
-              // dataProvider={dataProvider(supabaseClient)}
-              // liveProvider={liveProvider(supabaseClient)}
+              dataProvider={{
+                default: restDataProvider(getApiUrl(), "https://voyager.lemmy.ml"),
+                supabase: supabaseDataProvider(supabaseClient),
+              }}
+              liveProvider={liveProvider(supabaseClient)}
               authProvider={authProvider}
               routerProvider={routerBindings}
               notificationProvider={notificationProvider}
@@ -79,26 +69,6 @@ function App() {
                 {
                   name: "communities",
                   list: "/communities",
-                },
-                {
-                  name: "blog_posts",
-                  list: "/blog-posts",
-                  create: "/blog-posts/create",
-                  edit: "/blog-posts/edit/:id",
-                  show: "/blog-posts/show/:id",
-                  meta: {
-                    canDelete: true,
-                  },
-                },
-                {
-                  name: "categories",
-                  list: "/categories",
-                  create: "/categories/create",
-                  edit: "/categories/edit/:id",
-                  show: "/categories/show/:id",
-                  meta: {
-                    canDelete: true,
-                  },
                 },
               ]}
               options={{
@@ -134,18 +104,6 @@ function App() {
                   </Route>
                   <Route path="/communities">
                     <Route index element={<CommunityList />} />
-                  </Route>
-                  <Route path="/blog-posts">
-                    <Route index element={<BlogPostList />} />
-                    <Route path="create" element={<BlogPostCreate />} />
-                    <Route path="edit/:id" element={<BlogPostEdit />} />
-                    <Route path="show/:id" element={<BlogPostShow />} />
-                  </Route>
-                  <Route path="/categories">
-                    <Route index element={<CategoryList />} />
-                    <Route path="create" element={<CategoryCreate />} />
-                    <Route path="edit/:id" element={<CategoryEdit />} />
-                    <Route path="show/:id" element={<CategoryShow />} />
                   </Route>
                   <Route path="*" element={<ErrorComponent />} />
                 </Route>
