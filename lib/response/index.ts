@@ -56,10 +56,10 @@ export class ErrInvalidRequestResponse extends AnyResponse {
   }
 }
 
-export class JsonOkResponse extends AnyResponse {
-  data: Record<string, string | number | boolean | null> | Record<string, string | number | boolean | null>[]
+export class JsonOkResponse<T extends object> extends AnyResponse {
+  data: T
 
-  constructor(data: Record<string, string | number | boolean | null>) {
+  constructor(data: T) {
     super(200)
 
     this.data = data

@@ -1,50 +1,8 @@
 import type { Handler, HandlerEvent, HandlerResponse } from "@netlify/functions";
 import axios from "axios";
+import { LemmyCommunity } from "../../lib/lemmy";
 import { ErrInvalidRequestResponse, JsonOkResponse } from "../../lib/response";
-
-interface CommunityInfo {
-  id: number
-  name: string
-  title: string
-  removed: boolean
-  published: string
-  deleted: boolean
-  nsfw: boolean
-  actor_id: string
-  local: boolean
-  hidden: boolean
-  posting_restricted_to_mods: boolean
-  instance_id: number
-}
-
-type CommunitySubscriptionStatus = "NotSubscribed" | "Subscribed"
-
-interface CommunitySubscriptionData {
-  subscribed: CommunitySubscriptionStatus
-}
-
-interface CommunityBlockedData {
-  blocked: boolean
-}
-
-interface CommunityCounts {
-  id:  number
-  community_id:  number
-  subscribers:  number
-  posts:  number
-  comments:  number
-  published: string
-  users_active_day: number
-  users_active_week: number
-  users_active_month: number
-  users_active_half_year: number
-  hot_rank: number
-}
-
-type RawCommunity = CommunitySubscriptionData & CommunityBlockedData & {
-  community: CommunityInfo
-  counts: CommunityCounts
-}
+import { AppCommunity } from "../../src/models";
 
 const handler: Handler = async (event: HandlerEvent): Promise<HandlerResponse> => {
   const forwardedIp: string | undefined = event.headers["x-forwarded-for"]
@@ -65,7 +23,7 @@ const handler: Handler = async (event: HandlerEvent): Promise<HandlerResponse> =
 
   switch (response.status) {
   case 200:
-    return new JsonOkResponse(response.data.communities.map((c: RawCommunity) => ({
+    return new JsonOkResponse<AppCommunity>(response.data.communities.map((c: LemmyCommunity): AppCommunity => ({
       ...c.community,
       blocked: c.blocked,
       subscribed: c.subscribed,
