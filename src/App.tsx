@@ -37,6 +37,7 @@ import {
   CategoryList,
   CategoryShow,
 } from "./pages/categories";
+import { CommunityList } from "./pages/communities/list";
 import { dataProvider } from "./rest-data-provider";
 // import { supabaseClient } from "./utility";
 
@@ -62,7 +63,7 @@ function App() {
           <GlobalStyles styles={{ html: { WebkitFontSmoothing: "auto" } }} />
           <RefineSnackbarProvider>
             <Refine
-              dataProvider={dataProvider(getApiUrl())}
+              dataProvider={dataProvider(getApiUrl(), "https://voyager.lemmy.ml")}
               // dataProvider={dataProvider(supabaseClient)}
               // liveProvider={liveProvider(supabaseClient)}
               authProvider={authProvider}
@@ -70,6 +71,13 @@ function App() {
               notificationProvider={notificationProvider}
               i18nProvider={i18nProvider}
               resources={[
+                {
+                  name: "communities",
+                  list: "/communities",
+                  meta: {
+                    canDelete: false,
+                  }
+                },
                 {
                   name: "blog_posts",
                   list: "/blog-posts",
@@ -119,6 +127,9 @@ function App() {
                     index
                     element={<NavigateToResource resource="blog_posts" />}
                   />
+                  <Route path="/communities">
+                    <Route index element={<CommunityList />} />
+                  </Route>
                   <Route path="/blog-posts">
                     <Route index element={<BlogPostList />} />
                     <Route path="create" element={<BlogPostCreate />} />
