@@ -1,5 +1,6 @@
 import { Box, Card, CardContent, Chip, Tooltip, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import dayjs from "dayjs";
 import React from "react";
 import { AppPost } from "../../models";
 import { pluralize } from "../../utility/index";
@@ -11,7 +12,7 @@ const Wrapper = styled(Box)(({ theme }) => ({
 export const PostItem: React.FC<{ post: AppPost }> = ({ post }) => {
   const commentCountText = `${post.counts.comments.toLocaleString() ?? 0} ${pluralize(post.counts.comments, "comment", "comments")}`
   const scoreText = post.counts.score ?? 0
-  const relativePublished = "9 hrs ago"
+  const relativePublished = dayjs().to(dayjs.tz(post.post.published, "UTC").tz("America/Toronto"))
 
   return (
     <Wrapper>

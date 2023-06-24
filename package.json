@@ -21,6 +21,7 @@
     "@refinedev/simple-rest": "^4.5.0",
     "@refinedev/supabase": "^5.0.0",
     "axios": "^1.4.0",
+    "dayjs": "^1.11.8",
     "i18next": "^20.1.0",
     "i18next-browser-languagedetector": "^6.1.1",
     "i18next-xhr-backend": "^3.2.2",
