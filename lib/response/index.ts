@@ -1,13 +1,17 @@
 import type { HandlerResponse } from "@netlify/functions";
+import { isApp } from "../env";
 
 function getCorsHeaders(): {
   [header: string]: string | number | boolean
   } {
+  const allowedOrigin = isApp() ?
+    "https://stately-pastelito-cf587a.netlify.app/login"
+    : "http://localhost:5173"
+
   return {
     "access-control-allow-headers": "x-forwarded-by",
     "access-control-allow-methods": "GET",
-    "access-control-allow-origin": "*",
-    "content-type": "application/json",
+    "access-control-allow-origin": allowedOrigin,
   }
 }
 
@@ -18,7 +22,11 @@ export class AnyResponse {
   statusCode: number
 
   constructor(statusCode: number) {
-    this.headers = getCorsHeaders()
+    this.headers = {
+      ...getCorsHeaders(),
+      "content-type": "application/json",
+      "x-powered-by": "sauce",
+    }
 
     this.statusCode = statusCode
   }

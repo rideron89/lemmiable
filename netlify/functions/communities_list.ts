@@ -46,10 +46,6 @@ type RawCommunity = CommunitySubscriptionData & CommunityBlockedData & {
   counts: CommunityCounts
 }
 
-type FormattedCommunity = CommunityBlockedData & CommunityInfo & CommunitySubscriptionData & {
-  counts: CommunityCounts
-}
-
 const handler: Handler = async (event: HandlerEvent): Promise<HandlerResponse> => {
   const forwardedIp: string | undefined = event.headers["x-forwarded-for"]
   if (!forwardedIp) {
