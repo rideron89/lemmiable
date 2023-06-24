@@ -11,7 +11,8 @@ const handler: Handler = AppHandler.withMiddlewares([
 ]).handle(async (event: HandlerEvent, context: HandlerContext, data: MiddlewareData): Promise<HandlerResponse> => {
   const { forwardedIp, hostname } = data as { forwardedIp: string, hostname: string }
 
-  const response = await axios.get(`${hostname}/api/v3/community/list`, {
+  const url = `${hostname}/api/v3/community/list`.replace(/\/\//g, "/")
+  const response = await axios.get(url, {
     headers: {
       "x-forwarded-by": forwardedIp,
     },

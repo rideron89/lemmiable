@@ -19,11 +19,13 @@ import routerBindings, {
   UnsavedChangesNotifier,
 } from "@refinedev/react-router-v6";
 import { liveProvider, dataProvider as supabaseDataProvider } from "@refinedev/supabase";
+import { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import authProvider from "./authProvider";
 import { AppIcon } from "./components/app-icon";
 import { Header } from "./components/header";
+import { SettingsContext } from "./context/settings";
 import { ColorModeContextProvider } from "./contexts/color-mode";
 import { CommunityList } from "./pages/communities/list";
 import { PostList } from "./pages/posts/list";
@@ -31,10 +33,11 @@ import { dataProvider as restDataProvider } from "./rest-data-provider";
 import { supabaseClient } from "./utility";
 
 function getApiUrl(): string {
-  return "http://localhost:8888/.netlify/functions"
+  return import.meta.env.PROD ? import.meta.env.BASE_URL : "http://localhost:8888/.netlify/functions"
 }
 
 function App() {
+  const settings = useContext(SettingsContext)
   const { t, i18n } = useTranslation();
 
   const i18nProvider = {
@@ -53,7 +56,7 @@ function App() {
           <RefineSnackbarProvider>
             <Refine
               dataProvider={{
-                default: restDataProvider(getApiUrl(), "https://voyager.lemmy.ml"),
+                default: restDataProvider(getApiUrl(), settings.hostname),
                 supabase: supabaseDataProvider(supabaseClient),
               }}
               liveProvider={liveProvider(supabaseClient)}

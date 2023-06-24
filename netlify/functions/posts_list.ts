@@ -11,7 +11,8 @@ const handler: Handler = AppHandler.withMiddlewares([
   const { forwardedIp, hostname } = data as { forwardedIp: string, hostname: string }
   const { limit, page } = event.queryStringParameters ?? {}
 
-  const response = await axios.get(`${hostname}/api/v3/post/list`, {
+  const url = `${hostname}/api/v3/post/list`.replace(/\/\//g, "/")
+  const response = await axios.get(url, {
     headers: {
       "x-forwarded-by": forwardedIp,
     },

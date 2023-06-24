@@ -13,7 +13,8 @@ const handler: Handler = AppHandler.withMiddlewares([
 
   const { query } = event.queryStringParameters ?? {}
 
-  const response = await axios.get(`${hostname}/api/v3/search`, {
+  const url =`${hostname}/api/v3/search`.replace(/\/\//g, "/")
+  const response = await axios.get(url, {
     headers: {
       "x-forwarded-by": forwardedIp,
     },
