@@ -2,14 +2,11 @@ import { Box, Card, CardContent, Chip, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import React from "react";
 import { AppCommunity } from "../../models";
+import { pluralize } from "../../utility/index";
 
 const Wrapper = styled(Box)(({ theme }) => ({
   paddingTop: theme.spacing(1),
 }))
-
-function pluralize(value: number, singular: string, plural: string): string {
-  return value === 1 ? singular : plural
-}
 
 export const CommunityItem: React.FC<{ community: AppCommunity }> = ({ community }) => {
   const { posts, subscribers, users_active_week: usersActivePerWeek } = community.counts
@@ -34,7 +31,6 @@ export const CommunityItem: React.FC<{ community: AppCommunity }> = ({ community
             <Chip label={activeUsersPerWeekText} />
             <Chip label={postsText} sx={{ ml: 1.0 }} />
             <Chip label={subscribersText} sx={{ ml: 1.0 }} />
-            {/* <Divider orientation="vertical" flexItem sx={{ mx: 1 }} /> */}
           </Box>
         </CardContent>
       </Card>

@@ -38,6 +38,7 @@ import {
   CategoryShow,
 } from "./pages/categories";
 import { CommunityList } from "./pages/communities/list";
+import { PostList } from "./pages/posts/list";
 import { dataProvider } from "./rest-data-provider";
 // import { supabaseClient } from "./utility";
 
@@ -72,11 +73,12 @@ function App() {
               i18nProvider={i18nProvider}
               resources={[
                 {
+                  name: "posts",
+                  list: "/posts",
+                },
+                {
                   name: "communities",
                   list: "/communities",
-                  meta: {
-                    canDelete: false,
-                  }
                 },
                 {
                   name: "blog_posts",
@@ -127,6 +129,9 @@ function App() {
                     index
                     element={<NavigateToResource resource="blog_posts" />}
                   />
+                  <Route path="/posts">
+                    <Route index element={<PostList />} />
+                  </Route>
                   <Route path="/communities">
                     <Route index element={<CommunityList />} />
                   </Route>

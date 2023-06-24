@@ -15,7 +15,12 @@ export const dataProvider = (
   "createMany" | "updateMany" | "deleteMany"
 > => ({
   getList: async ({ resource, pagination, filters, sorters, meta }) => {
-    const url = `${apiUrl}/${resource}_search`;
+    let url = `${apiUrl}/${resource}`;
+    if (meta?.isSearch) {
+      url += "_search"
+    } else {
+      url += "_list"
+    }
 
     const { current = 1, pageSize = 10, mode = "server" } = pagination ?? {};
 

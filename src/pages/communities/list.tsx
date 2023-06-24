@@ -19,6 +19,7 @@ export const CommunityList: React.FC<IResourceComponentsProps> = () => {
   const { data, isLoading, isError } = useList<AppCommunity>({
     resource: "communities",
     meta: {
+      isSearch: debouncedSearchQuery.length > 0,
       query: debouncedSearchQuery,
     },
   })
